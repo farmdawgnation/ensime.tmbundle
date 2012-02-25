@@ -82,7 +82,7 @@ module Ensime
     def organize_imports(file)
       if !@socket.nil?
         TextMate.save_current_document()
-        msg = create_message('(swank:perform-refactor '+@procedure_id.to_s+' organizeImports ' +
+        msg = create_message('(swank:prepare-refactor '+@procedure_id.to_s+' organizeImports ' +
                              '(file "'+file+'"))')
         @socket.print(msg)
         swankmsg = get_response(@socket)
@@ -224,7 +224,7 @@ module Ensime
           if !newName.nil?
             startCount = chars_up_to_line + ENV['TM_LINE_INDEX'].to_i + 1
             endCount = startCount + selected.length          
-            msg = create_message('(swank:perform-refactor 1 rename ' + 
+            msg = create_message('(swank:prepare-refactor 1 rename ' + 
                                  '(file "'+file+'" '+
                                  'start '+startCount.to_s+' '+
                                  'end '+endCount.to_s+' '+
