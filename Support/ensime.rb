@@ -145,7 +145,7 @@ module Ensime
         project_config = read_project_file
         if !project_config.nil?
           project_parsed = @parser.parse_string(project_config)
-          project_package = look_up(":project-package",project_parsed[0])
+          project_package = look_up(":package",project_parsed[0])
           msg = create_message('(swank:inspect-package-by-path "'+project_package+'")')
           @socket.print(msg)
           response_parsed = @parser.parse_string(get_response(@socket))
