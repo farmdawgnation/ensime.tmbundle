@@ -222,24 +222,16 @@ module Ensime
             :title => "Rename '#{selected}'",
             :prompt => "Enter the new name for '#{selected}'"})
           if !newName.nil?
-            startCount = chars_up_to_line + ENV['TM_LINE_INDEX'].to_i + 1
-            endCount = startCount + selected.length          
+            # FIXME: This only works if you select right to left.
+            startCount = chars_up_to_line + ENV['TM_LINE_INDEX'].to_i
+            endCount = startCount + selected.length   
             msg = create_message('(swank:prepare-refactor 1 rename ' + 
                                  '(file "'+file+'" '+
                                  'start '+startCount.to_s+' '+
                                  'end '+endCount.to_s+' '+
-                                 'newName "'+newName+'"))')
+                                 'newName "'+newName+'") nil)')
             @socket.print(msg)
-            swankmsg = get_response(@socket)
-          
-            # message to tell ensime to apply the changes
-            parsed = @parser.parse_string(swankmsg)
-            precedId = parsed[0][1][1][1]
-            doItMessage = create_message("(swank:exec-refactor #{precedId} rename)")
 
-            @socket.print(doItMessage)
-            rslt = get_response(@socket)
-            rsltParsed = @parser.parse_string(rslt)
             TextMate::UI.tool_tip("Done renaming")
           else
             TextMate::UI.tool_tip("Aborted refactoring")
