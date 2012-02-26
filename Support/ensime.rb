@@ -4,6 +4,7 @@ BUNDLE_LIB = ENV['TM_BUNDLE_SUPPORT'] + "/"
 require 'strscan'
 require 'stringio'
 require "socket"
+require 'singleton'
 require 'pp' # pretty printing
 require SUPPORT_LIB + 'io'
 require SUPPORT_LIB + 'ui'
@@ -29,24 +30,26 @@ module Ensime
   # in turn communicates with the ENSIME backend but this is 
   # transparrent to the user
   class Client
+    # Making this guy a singleton is the first step to
+    # making this behave like a true ENSIME client that
+    # can receive ad-hoc messages from the server.
+    include Singleton
     
-    def initialize(print_error_message = true)
-      begin
-        @html_helper = HTMLHelper.new
-        @socket = connect
-      rescue 
-        @socket = nil
-        if print_error_message
-          TextMate::UI.tool_tip("Please start the ensime backend first." )
-        end
-      end
-      
+    def initialize
       @procedure_id = 1
       @parser = Sexpistol.new
       @parser.ruby_keyword_literals = false
+      @socket = nil
     end
     
     def initialize_project
+      begin
+        @html_helper = HTMLHelper.new
+        @socket = connect
+      rescue
+        TextMate::UI.tool_tip("Please start the ensime backend first." )
+      end
+      
       set_message_counter(0)
       if !@socket.nil?
         project_config = read_project_file

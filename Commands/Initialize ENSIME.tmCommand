@@ -9,7 +9,7 @@
 
 require ENV['TM_BUNDLE_SUPPORT'] + '/ensime.rb'
 
-Ensime::Client.new.initialize_project</string>
+Ensime::Client.instance.initialize_project</string>
 	<key>input</key>
 	<string>selection</string>
 	<key>keyEquivalent</key>

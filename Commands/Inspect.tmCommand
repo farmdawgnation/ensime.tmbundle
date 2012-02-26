@@ -9,7 +9,7 @@
 
 require ENV['TM_BUNDLE_SUPPORT'] + '/ensime.rb'
 
-Ensime::Client.new.inspect()</string>
+Ensime::Client.instance.inspect()</string>
 	<key>input</key>
 	<string>selection</string>
 	<key>keyEquivalent</key>
