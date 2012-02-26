@@ -83,18 +83,10 @@ module Ensime
       if !@socket.nil?
         TextMate.save_current_document()
         msg = create_message('(swank:prepare-refactor '+@procedure_id.to_s+' organizeImports ' +
-                             '(file "'+file+'"))')
+                             '(file "'+file+'") nil)')
         @socket.print(msg)
         swankmsg = get_response(@socket)
         
-        # message to tell ensime to apply the changes
-        parsed = @parser.parse_string(swankmsg)
-        precedId = parsed[0][1][1][1]
-        doItMessage = create_message("(swank:exec-refactor #{precedId} organizeImports)")
-        
-        @socket.print(doItMessage)
-        rslt = get_response(@socket)
-        rsltParsed = @parser.parse_string(rslt)
         TextMate::UI.tool_tip("Done organizing")
       end
       contents = File.open(file, "rb") { |f| f.read }
