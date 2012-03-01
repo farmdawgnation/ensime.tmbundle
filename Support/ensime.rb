@@ -12,7 +12,6 @@ require SUPPORT_LIB + 'tm/tempfile'
 require SUPPORT_LIB + 'tm/htmloutput'
 require SUPPORT_LIB + 'tm/process'
 require SUPPORT_LIB + 'tm/save_current_document.rb'
-require SUPPORT_LIB + 'tm/detach.rb'
 require BUNDLE_LIB + "ScalaParser.rb"
 require BUNDLE_LIB + "sexpistol/sexpistol_parser.rb"
 require BUNDLE_LIB + "sexpistol/sexpistol.rb"
@@ -53,14 +52,11 @@ module Ensime
         if !project_config.nil?
           infoMsg = create_message("(swank:connection-info)")
           projectMsg = create_message("(swank:init-project #{project_config})")
-          
           @socket.print(infoMsg)
-          swankResponse = @parser.parse_string(get_response(@socket))
-          
+          @parser.parse_string(get_response(@socket))
           @socket.print(projectMsg)
-          swankResponse = @parser.parse_string(get_response(@socket))
-          
-          puts "ENSIME is running. Please wait while it is analyzing your code."
+          @parser.parse_string(get_response(@socket))
+          puts "ENSIME is running. Please wait while it is analyzing your code"      
         else
           puts "Please create a .ensime project file and place it your\nprojects root directory"
         end
