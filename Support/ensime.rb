@@ -105,7 +105,7 @@ module Ensime
     # It will save the current buffer to the HDD. Send a request to ENSIME to 
     # reformat the file on disk. Then it reads the file on disk and replaces 
     # the content of the buffer with the contents of the file on disk
-    def format_file(file)
+    def format_file(file)      
       if !@socket.nil?
         TextMate.save_current_document()
         msg = create_message('(swank:format-source ("'+file+'"))')
@@ -500,7 +500,7 @@ module Ensime
       file = File.new(ENSIME_PORT_FILE, "r")
       port = file.gets.to_i
       file.close
-      return TCPSocket.open("127.0.0.1", port)
+      return TCPSocket.open("127.0.0.1", port)      
     end
     
     # TODO: What if there's not project file
