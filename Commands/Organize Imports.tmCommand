@@ -9,7 +9,7 @@
 
 require ENV['TM_BUNDLE_SUPPORT'] + '/ensime.rb'
 
-Ensime::Client.instance.organize_imports(ENV['TM_FILEPATH'])</string>
+Ensime::Client.new.organize_imports(ENV['TM_FILEPATH'])</string>
 	<key>input</key>
 	<string>document</string>
 	<key>keyEquivalent</key>
