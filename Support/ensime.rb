@@ -330,15 +330,16 @@ module Ensime
       end 
       #puts caret_position.to_s
       point = caret_position - word.length
-      msg = create_message('(swank:type-completion "'+file+'" '+point.to_s+' "'+partialCompletion+'")')        
+      msg = create_message('(swank:completions "'+file+'" '+point.to_s+' "'+partialCompletion+'")')        
       @socket.print(msg)
+      swankmsg = get_response(@socket)
       swankmsg = get_response(@socket)
       parsed = @parser.parse_string(swankmsg)
       # pp parsed
-      if parsed[0][1][1] == []
+      if parsed[0][1][1][3] == []
         puts "No completions."
       else
-        compls = parsed[0][1][1].collect do |compl|
+        compls = parsed[0][1][1][3].collect do |compl|
           id = compl[5].to_i
           {'id' => id,
            'image' => "Function", 
