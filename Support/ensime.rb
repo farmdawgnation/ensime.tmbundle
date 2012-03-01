@@ -298,11 +298,13 @@ module Ensime
     end
     
     def complete_scope(file,word,line)
-      msg = create_message('(swank:scope-completion "'+file+'" '+caret_position.to_s+' "'+word+'" nil)')
+      msg = create_message('(swank:completions "'+file+'" '+caret_position.to_s+' "'+word+'" nil)')
       @socket.print(msg)
       swankmsg = get_response(@socket)
+      swankmsg = get_response(@socket)
       parsed = @parser.parse_string(swankmsg)
-      compls = parsed[0][1][1].collect do |compl|
+      
+      compls = parsed[0][1][1][3].collect do |compl|
         img = begin
           fst = compl[1].chars.first.to_s
           if fst.match(/\w/) != nil && fst.capitalize != fst
