@@ -26,7 +26,10 @@ Now open a file file in that project and hit ⌃⇧R and chose "Start ENSIME". T
   - Navigation (⌘⇧C): Works just like Go-to-file expect it knows about the classes/objects/traits/etc. in your project. This will show all of the members in all of the packages in your project. You can navigate the list using the arrow-keys and filter it using the search field at the top. Hitting enter will open the file where the selected item was declared and move the caret to the appropriate line. *(working)*
   - Inspect (⌃⇧i): This will show a tooltip with the type of the expression under the caret. *(working)*
   - Type check project(⌃⇧V): This will type check your project. If there are any errors it will display a drop-down list with the errors. If you pick one of the items it will jump to that line in the file with the error. *(type check occurs, but doesn't display results properly)*
-  - Code completion (⌥+⎋): This will do code-completion or either types or methods depending on when you call it. *(not working)*
+  - Code completion (⌥⎋): This will do code-completion or either types or methods depending on when you call it. *(partially working)*
+    - This has some weirdness that isn't immediately obvious. First, completing a local variable works as one would expect. Start typing it and hit the key combo.
+    - To complete a class member you'll be required to type as much as you know (if any) of the member name, a space, then the key combination. This has to do with how ENSIME interprets scope vs type completion. I'm going to attempt to mitigate this difference soon.
+    - Additionally, there are some issues with method completion. The bundle becomes convinced that all methods take one argument that is a String. This is a known bug that I'm working on.
 
 
 Installation 
@@ -37,7 +40,7 @@ against 0.9.2 RC2. After you download ENSIME, unzip it wherever you like.
 
 To install the bundle simply run the following in your terminal:
 
-<pre><code>git clone https://github.com/mads379/ensime.tmbundle.git
+<pre><code>git clone https://github.com/farmdawgnation/ensime.tmbundle.git
 open ensime.tmbundle</code></pre>
 
 Add the shell variable ENSIME_HOME in TextMate -> Preferences... -> Advanced -> Shell Variables to the root of your ENSIME distribution (This would be the path to the folder you just unpacked). For me this is <code>/Users/matt/ensime_2.8.3-SNAPSHOT-0.9.3.RC2</code>
