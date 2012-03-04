@@ -27,9 +27,11 @@ Now open a file file in that project and hit ⌃⇧R and chose "Start ENSIME". T
   - Inspect (⌃⇧i): This will show a tooltip with the type of the expression under the caret. *(working)*
   - Type check project(⌃⇧V): This will type check your project. If there are any errors it will display a drop-down list with the errors. If you pick one of the items it will jump to that line in the file with the error. *(type check occurs, but doesn't display results properly)*
   - Code completion (⌥⎋): This will do code-completion or either types or methods depending on when you call it. *(partially working)*
-    - This has some weirdness that isn't immediately obvious. First, completing a local variable works as one would expect. Start typing it and hit the key combo.
-    - To complete a class member you'll be required to type as much as you know (if any) of the member name, a space, then the key combination. This has to do with how ENSIME interprets scope vs type completion. I'm going to attempt to mitigate this difference soon.
-    - Additionally, there are some issues with method completion. The bundle becomes convinced that all methods take one argument that is a String. This is a known bug that I'm working on.
+
+Code complete currently has some weirdness that isn't obvious.
+  * First, completing a local variable works as one would expect. Start typing it and hit the key combo.
+  * To complete a class member you'll be required to type as much as you know (if any) of the member name, a space, then the key combination. This has to do with how ENSIME interprets scope vs type completion. I'm going to attempt to mitigate this difference soon.
+  * Additionally, there are some issues with method completion. The bundle becomes convinced that all methods take one argument that is a String. This is a known bug that I'm working on.
 
 
 Installation 
