@@ -265,7 +265,7 @@ module Ensime
           puts "Sorry, import completion isn't implemented yet"
         elsif (prev_char_index > white_space_count) && 
            (prev_char == '.' || prev_char == ' ')
-          # puts "complete type"
+           
           complete_type(file,wd,line)
         else
           # puts "scope"
@@ -352,29 +352,28 @@ module Ensime
           @socket.print(msg)
           swankmsg = get_response(@socket)
           parsed = @parser.parse_string(swankmsg)
-          # e_sn parsed[0][1][1][3][.inspect
-          noImplicits = parsed[0][1][1][3].select do |arr|
-            arr[3] == nil #check if it is implicit
+          
+          noImplicits = parsed[0][1][1][3][0][1].select do |arr|
+            arr[1][1] != nil #check if it is implicit
+            # Still not quite sure why this check was put here, but I'm
+            # leaving it in place for now. -MF
           end
-          curries = noImplicits.collect do |arr|
-            [arr[1][0][1][1],
-             arr[1][0][1][9]]
-          end
-          # e_sn curries.inspect
+          
           stopPoint = 0
-          str = curries.collect do |arr|
+          str = noImplicits.collect do |singleParameterInformation|
             stopPoint = stopPoint +1
-            if arr[1] == nil # no type params
-              "(${#{stopPoint.to_s}:#{arr[0]}})"
+            parameterName = singleParameterInformation[0]
+            parameterType = singleParameterInformation[1][1]
+            parameterTypeArgs = singleParameterInformation[1][9]
+            
+            if parameterTypeArgs.nil?
+              "${#{stopPoint.to_s}:#{parameterName}:#{parameterType}}"
             else
-              preExpand = arr[0] + "[" + arr[1].collect{ |typ| typ[1] }.join(", ") + "]"
-              expanded = ScalaParser::Expander.new(stopPoint).expand(preExpand)
-              rslt = "(${#{stopPoint.to_s}:" + expanded.string + "})"
-              stopPoint = expanded.point
-              rslt
+              # TODO: Fix handling with type args
+              "${#{stopPoint.to_s}:#{parameterName}:#{parameterType}}"
             end
           end
-          str.to_s
+          "(" + str.join(", ") + ")"
         }
       end
     end
