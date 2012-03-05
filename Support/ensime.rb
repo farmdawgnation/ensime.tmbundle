@@ -369,7 +369,8 @@ module Ensime
             if parameterTypeArgs.nil?
               "${#{stopPoint.to_s}:#{parameterName}:#{parameterType}}"
             else
-              # TODO: Fix handling with type args
+              # TODO: Implement recursive expansion of type args so that
+              # sutff like Option[List[String]] will work as well as just List[String]
               "${#{stopPoint.to_s}:#{parameterName}:#{parameterType}}"
             end
           end
